@@ -8,12 +8,11 @@ app.use(cors());
 app.use(express.json());
 
 const db = mysql.createConnection({
-    host: "localhost",
-    user: "Gokul",
-    password: "gokul@2008",
-    database: "lab_attendance"
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 });
-
 db.connect((err) => {
     if (err) {
         console.log("Database connection failed:", err.message);
