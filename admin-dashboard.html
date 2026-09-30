@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="admin-dashboard">
+
+        <!-- Admin Header -->
+        <div class="admin-header">
+
+            <div>
+                <h1>Admin Dashboard</h1>
+                <p>Lab Attendance Management System</p>
+            </div>
+
+            <button class="admin-logout" onclick="adminLogout()">
+                Logout
+            </button>
+
+        </div>
+
+
+        <!-- Statistics -->
+        <div class="admin-stats">
+
+            <div class="admin-stat-card">
+                <h3>Total Students</h3>
+                <strong id="totalStudents">0</strong>
+            </div>
+
+
+            <div class="admin-stat-card">
+                <h3>Present Today</h3>
+                <strong id="presentToday">0</strong>
+            </div>
+
+
+            <div class="admin-stat-card">
+                <h3>Absent Today</h3>
+                <strong id="absentToday">0</strong>
+            </div>
+
+
+            <div class="admin-stat-card">
+                <h3>Total Labs</h3>
+                <strong>3</strong>
+            </div>
+
+        </div>
+
+
+        <!-- Admin Options -->
+        <div class="admin-options">
+
+            <!-- Student Attendance -->
+            <div class="admin-option-card">
+
+                <h2>Student Attendance</h2>
+
+                <p>
+                    View and manage student attendance records.
+                </p>
+
+                <button onclick="viewAttendance()">
+                    View Attendance
+                </button>
+
+            </div>
+
+
+            <!-- Attendance Report -->
+            <div class="admin-option-card">
+
+                <h2>Attendance Report</h2>
+
+                <p>
+                    View overall attendance statistics and reports.
+                </p>
+
+                <button onclick="viewReport()">
+                    View Report
+                </button>
+
+            </div>
+
+
+            <!-- Lab Management -->
+            <div class="admin-option-card">
+
+                <h2>Lab Management</h2>
+
+                <p>
+                    Manage Data Structure, OS and Java labs.
+                </p>
+
+                <button onclick="manageLabs()">
+                    Manage Labs
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        // Get attendance data
+        const history =
+            JSON.parse(
+                localStorage.getItem("attendanceHistory")
+            ) || [];
+
+
+        // Get unique students
+        const students =
+            [...new Set(
+                history.map(item => item.regNumber)
+            )];
+
+
+        document.getElementById("totalStudents").innerText =
+            students.length;
+
+
+        // Today's date
+        const today =
+            new Date().toLocaleDateString();
+
+
+        // Today's attendance
+        const todayHistory =
+            history.filter(
+                item => item.date === today
+            );
+
+
+        const presentCount =
+            todayHistory.filter(
+                item => item.status === "Present"
+            ).length;
+
+
+        const absentCount =
+            todayHistory.filter(
+                item => item.status === "Absent"
+            ).length;
+
+
+        document.getElementById("presentToday").innerText =
+            presentCount;
+
+
+        document.getElementById("absentToday").innerText =
+            absentCount;
+
+
+        // Student Attendance
+        function viewAttendance() {
+
+            window.location.href =
+                "admin-attendance.html";
+
+        }
+
+
+        // Attendance Report
+        function viewReport() {
+
+            window.location.href =
+                "admin-report.html";
+
+        }
+
+
+        // Lab Management
+        function manageLabs() {
+
+            window.location.href =
+                "admin-labs.html";
+
+        }
+
+
+        // Admin Logout
+        function adminLogout() {
+
+            window.location.href =
+                "admin-login.html";
+
+        }
+
+    </script>
+
+</body>
+
+</html>

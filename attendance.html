@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lab Attendance</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <div class="dashboard-header">
+            <h1>Mark Attendance</h1>
+            <p>Student Lab Attendance Management System</p>
+        </div>
+
+        <div class="lab-card">
+
+            <h2 id="labName">Lab Attendance</h2>
+
+            <p>
+                <b>Registration Number:</b>
+                <span id="regNumber"></span>
+            </p>
+
+            <p>
+                <b>Class:</b>
+                <span id="studentClass"></span>
+            </p>
+
+            <p>
+                <b>Date:</b>
+                <span id="date"></span>
+            </p>
+
+            <p>
+                <b>Time:</b>
+                <span id="time"></span>
+            </p>
+            <div class="system-number-box">
+            <label for="systemNumber">System Number</label>
+            <input
+        type="text"
+        id="systemNumber"
+        placeholder="Enter System Number"
+        required
+         >
+</div>
+            <div class="attendance-buttons">
+
+                <button class="present-btn" onclick="markAttendance('Present')">
+                    Present
+                </button>
+
+                <button class="absent-btn" onclick="markAttendance('Absent')">
+                    Absent
+                </button>
+
+            </div>
+
+            <p id="message"></p>
+
+            <br>
+
+            <button onclick="viewHistory()">
+                View My Attendance
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const params =
+            new URLSearchParams(window.location.search);
+
+        const lab = params.get("lab");
+        const regNumber = params.get("regNumber");
+        const studentClass = params.get("class");
+
+
+        document.getElementById("labName").innerText =
+            lab || "Lab Attendance";
+
+        document.getElementById("regNumber").innerText =
+            regNumber || "Not available";
+
+        document.getElementById("studentClass").innerText =
+            studentClass || "Not available";
+
+
+        function updateDateTime() {
+
+            const now = new Date();
+
+            document.getElementById("date").innerText =
+                now.toLocaleDateString();
+
+            document.getElementById("time").innerText =
+                now.toLocaleTimeString();
+        }
+
+        updateDateTime();
+
+        setInterval(updateDateTime, 1000);
+
+
+       function markAttendance(status) {
+
+    const systemNumber =
+        document.getElementById("systemNumber").value.trim();
+
+    if (systemNumber === "") {
+        alert("Please enter System Number");
+        return;
+    }
+
+    const now = new Date();
+
+    const attendance = {
+        lab: lab,
+        regNumber: regNumber,
+        systemNumber: systemNumber,
+        studentClass: studentClass,
+        status: status,
+        date: now.toLocaleDateString(),
+        time: now.toLocaleTimeString()
+    };
+
+    let history =
+        JSON.parse(localStorage.getItem("attendanceHistory")) || [];
+
+    history.push(attendance);
+
+    localStorage.setItem(
+        "attendanceHistory",
+        JSON.stringify(history)
+    );
+
+    document.getElementById("message").innerText =
+        "Attendance marked " + status;
+
+}
+
+
+        function viewHistory() {
+
+            window.location.href =
+                "attendance-history.html?regNumber=" +
+                encodeURIComponent(regNumber);
+
+        }
+
+    </script>
+
+</body>
+
+</html>

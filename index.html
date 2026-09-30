@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lab Attendance Management</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="login-container">
+
+        <!-- Logo -->
+        <div class="logo">
+            LA
+        </div>
+
+        <!-- Heading -->
+        <h2>Lab Attendance</h2>
+
+        <p class="subtitle">
+            Student Attendance Management System
+        </p>
+
+        <!-- Login Form -->
+<form id="loginForm">
+            <!-- Registration Number -->
+            <div class="input-group">
+                <label for="regNumber">
+                    Registration Number
+                </label>
+
+                <input
+                    type="text"
+                    id="regNumber"
+                    name="regNumber"
+                    placeholder="Enter registration number"
+                    required
+                >
+            </div>
+
+            <!-- Password -->
+            <div class="input-group">
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter password"
+                    required
+                >
+            </div>
+
+            <!-- Class -->
+            <div class="input-group">
+                <label for="class">
+                    Class
+                </label>
+
+                <select id="class" name="class" required>
+                    <option value="">Select your class</option>
+                    <option value="CSE-A">CSE - A</option>
+                    <option value="CSE-B">CSE - B</option>
+                </select>
+            </div>
+
+            <!-- Login Button -->
+            <button type="submit">
+                Login
+            </button>
+
+        </form>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2026 Lab Attendance Management System</p>
+        </div>
+
+    </div>
+ <script>
+document.getElementById("loginForm").addEventListener("submit", async function (event) {
+
+    event.preventDefault();
+
+    const username = document.getElementById("regNumber").value.trim();
+    const password = document.getElementById("password").value;
+
+    try {
+
+        const response = await fetch(
+            "http://localhost:8080/api/students/login?username="
+            + encodeURIComponent(username)
+            + "&password="
+            + encodeURIComponent(password),
+            {
+                method: "POST"
+            }
+        );
+
+        if (!response.ok) {
+            alert("Invalid Registration Number or Password");
+            return;
+        }
+
+        const student = await response.json();
+
+        localStorage.setItem("student", JSON.stringify(student));
+alert("LOGIN DATA SAVED");
+window.location.href = "./dashboard.html";
+
+    } catch (error) {
+
+        console.error(error);
+        alert("Backend connection failed");
+
+    }
+
+});
+</script>
+
+</body>
+
+</html>

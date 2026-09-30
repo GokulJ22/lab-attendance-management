@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lab Management</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="admin-dashboard">
+
+        <!-- Header -->
+        <div class="admin-header">
+
+            <div>
+                <h1>Lab Management</h1>
+                <p>Manage Laboratory Sections</p>
+            </div>
+
+            <button class="admin-logout" onclick="goBack()">
+                Back
+            </button>
+
+        </div>
+
+
+        <!-- Lab Cards -->
+        <div class="admin-options">
+
+            <!-- Data Structure -->
+            <div class="admin-option-card">
+
+                <h2>Data Structure Lab</h2>
+
+                <p>
+                    Manage attendance for Data Structure practical sessions.
+                </p>
+
+                <div class="lab-status">
+                    <span>Status</span>
+                    <strong>Active</strong>
+                </div>
+
+                <button onclick="viewLab('Data Structure Lab')">
+                    View Attendance
+                </button>
+
+            </div>
+
+
+            <!-- OS -->
+            <div class="admin-option-card">
+
+                <h2>OS Lab</h2>
+
+                <p>
+                    Manage attendance for Operating System practical sessions.
+                </p>
+
+                <div class="lab-status">
+                    <span>Status</span>
+                    <strong>Active</strong>
+                </div>
+
+                <button onclick="viewLab('OS Lab')">
+                    View Attendance
+                </button>
+
+            </div>
+
+
+            <!-- Java -->
+            <div class="admin-option-card">
+
+                <h2>Java Lab</h2>
+
+                <p>
+                    Manage attendance for Java practical sessions.
+                </p>
+
+                <div class="lab-status">
+                    <span>Status</span>
+                    <strong>Active</strong>
+                </div>
+
+                <button onclick="viewLab('Java Lab')">
+                    View Attendance
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        function viewLab(labName) {
+
+            window.location.href =
+                "admin-attendance.html?lab=" +
+                encodeURIComponent(labName);
+
+        }
+
+
+        function goBack() {
+
+            window.location.href =
+                "admin-dashboard.html";
+
+        }
+
+    </script>
+
+</body>
+
+</html>

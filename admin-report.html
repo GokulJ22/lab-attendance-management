@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Attendance Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="admin-dashboard">
+
+        <!-- Header -->
+        <div class="admin-header">
+
+            <div>
+                <h1>Attendance Report</h1>
+                <p>Overall Student Attendance</p>
+            </div>
+
+            <button class="admin-logout" onclick="goBack()">
+                Back
+            </button>
+
+        </div>
+
+
+        <!-- Summary -->
+        <div class="admin-stats">
+
+            <div class="admin-stat-card">
+                <h3>Total Records</h3>
+                <strong id="totalRecords">0</strong>
+            </div>
+
+            <div class="admin-stat-card">
+                <h3>Total Present</h3>
+                <strong id="totalPresent">0</strong>
+            </div>
+
+            <div class="admin-stat-card">
+                <h3>Total Absent</h3>
+                <strong id="totalAbsent">0</strong>
+            </div>
+
+            <div class="admin-stat-card">
+                <h3>Attendance Percentage</h3>
+                <strong id="attendancePercentage">0%</strong>
+            </div>
+
+        </div>
+
+
+        <!-- Lab Report -->
+        <div class="lab-card attendance-admin-card">
+
+            <h2>Lab-wise Attendance</h2>
+
+            <canvas id="attendanceChart"></canvas>
+
+            <div class="table-container">
+
+                <table id="reportTable">
+
+                    <thead>
+
+                        <tr>
+                            <th>Lab</th>
+                            <th>Total</th>
+                            <th>Present</th>
+                            <th>Absent</th>
+                            <th>Percentage</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="reportBody">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        // Get attendance history
+        const history =
+            JSON.parse(
+                localStorage.getItem("attendanceHistory")
+            ) || [];
+
+
+        // Overall statistics
+        const total =
+            history.length;
+
+        const present =
+            history.filter(
+                item => item.status === "Present"
+            ).length;
+
+        const absent =
+            history.filter(
+                item => item.status === "Absent"
+            ).length;
+
+
+        const percentage =
+            total > 0
+                ? ((present / total) * 100).toFixed(1)
+                : 0;
+
+
+        document.getElementById("totalRecords").innerText =
+            total;
+
+        document.getElementById("totalPresent").innerText =
+            present;
+
+        document.getElementById("totalAbsent").innerText =
+            absent;
+
+        document.getElementById("attendancePercentage").innerText =
+            percentage + "%";
+
+
+        // Lab-wise report
+        const labs = [
+            "Data Structure Lab",
+            "OS Lab",
+            "Java Lab"
+        ];
+
+
+        const reportBody =
+            document.getElementById("reportBody");
+
+
+        labs.forEach(lab => {
+
+            const labRecords =
+                history.filter(
+                    item => item.lab === lab
+                );
+
+
+            const labTotal =
+                labRecords.length;
+
+
+            const labPresent =
+                labRecords.filter(
+                    item => item.status === "Present"
+                ).length;
+
+
+            const labAbsent =
+                labRecords.filter(
+                    item => item.status === "Absent"
+                ).length;
+
+
+            const labPercentage =
+                labTotal > 0
+                    ? ((labPresent / labTotal) * 100).toFixed(1)
+                    : 0;
+
+
+            const row =
+                document.createElement("tr");
+
+
+            row.innerHTML = `
+                <td>${lab}</td>
+                <td>${labTotal}</td>
+                <td>${labPresent}</td>
+                <td>${labAbsent}</td>
+                <td>${labPercentage}%</td>
+            `;
+
+
+            reportBody.appendChild(row);
+
+        });
+
+
+        // Back to dashboard
+        function goBack() {
+
+            window.location.href =
+                "admin-dashboard.html";
+
+        }
+        const chart = document.getElementById("attendanceChart");
+
+new Chart(chart, {
+    type: "doughnut",
+    data: {
+        labels: ["Present", "Absent"],
+        datasets: [{
+            data: [present, absent]
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: "bottom"
+            }
+        }
+    }
+});
+
+    </script>
+
+</body>
+
+</html>

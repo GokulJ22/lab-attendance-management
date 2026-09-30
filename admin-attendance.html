@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Attendance</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="admin-dashboard">
+
+        <div class="admin-header">
+
+            <div>
+                <h1 id="pageTitle">Student Attendance</h1>
+                <p>Attendance Records</p>
+            </div>
+
+            <button class="admin-logout" onclick="goBack()">
+                Back
+            </button>
+<button class="refresh-btn" onclick="location.reload()">Refresh</button>
+
+<button class="clear-all-btn" onclick="clearAllRecords()">
+    Clear All Records
+</button>
+
+
+        </div>
+
+
+        <div class="lab-card attendance-admin-card">
+
+            <h2 id="labTitle">All Attendance Records</h2>
+            <div class="attendance-filters">
+        <input
+        type="text"
+        id="searchStudent"
+        placeholder="Search Registration Number"
+        onkeyup="filterAttendance()"
+        >
+
+        <select id="classFilter" onchange="filterAttendance()">
+        <option value="">All Classes</option>
+        <option value="CSE-A">CSE-A</option>
+        <option value="CSE-B">CSE-B</option>
+        </select>
+
+        </div>
+
+            <div class="table-container">
+
+                <table id="adminAttendanceTable">
+
+                    <thead>
+                        <tr>
+                            <th>Registration Number</th>
+                            <th>System Number</th>
+                            <th>Class</th>
+                            <th>Lab</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="adminAttendanceBody">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const params =
+            new URLSearchParams(window.location.search);
+
+        const selectedLab =
+            params.get("lab");
+
+
+        const history =
+            JSON.parse(
+                localStorage.getItem("attendanceHistory")
+            ) || [];
+
+
+        let filteredHistory = history;
+
+
+        // Filter selected lab
+        if (selectedLab) {
+
+            filteredHistory =
+                history.filter(
+                    item => item.lab === selectedLab
+                );
+
+            document.getElementById("pageTitle").innerText =
+                selectedLab + " Attendance";
+
+            document.getElementById("labTitle").innerText =
+                selectedLab + " Records";
+
+        }
+
+
+        const tableBody =
+            document.getElementById("adminAttendanceBody");
+
+
+        if (filteredHistory.length === 0) {
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="6">
+                        No attendance records found
+                    </td>
+                </tr>
+            `;
+
+        } else {
+
+            filteredHistory.forEach(item => {
+
+                const row =
+                    document.createElement("tr");
+
+                row.innerHTML = `
+                    <td>${item.regNumber || "-"}</td>
+                    <td>${item.systemNumber || "-"}</td>
+                    <td>${item.studentClass || "-"}</td>
+                    <td>${item.lab || "-"}</td>
+                    <td class="${item.status === 'Present' ? 'status-present' : 'status-absent'}">
+                    ${item.status || "-"}
+                    </td>
+                    <td>${item.date || "-"}</td>
+                    <td>${item.time || "-"}</td>
+                    <td>
+                        <button class="delete-record-btn"
+                     onclick="deleteRecord(${history.indexOf(item)})">
+                    Delete
+                </button>
+</td>
+                `;
+
+                tableBody.appendChild(row);
+
+            });
+
+        }
+        function filterAttendance() {
+
+    const searchValue =
+        document.getElementById("searchStudent").value.toLowerCase();
+
+    const classValue =
+        document.getElementById("classFilter").value;
+
+    const rows =
+        document.querySelectorAll("#adminAttendanceBody tr");
+
+    rows.forEach(row => {
+
+        const cells = row.querySelectorAll("td");
+
+        if (cells.length < 6) return;
+
+        const regNumber = cells[0].innerText.toLowerCase();
+        const studentClass = cells[1].innerText;
+
+        const searchMatch =
+            regNumber.includes(searchValue);
+
+        const classMatch =
+            classValue === "" ||
+            studentClass === classValue;
+
+        if (searchMatch && classMatch) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+    });
+}
+function deleteRecord(index) {
+
+    const history =
+        JSON.parse(localStorage.getItem("attendanceHistory")) || [];
+
+    history.splice(index, 1);
+
+    localStorage.setItem(
+        "attendanceHistory",
+        JSON.stringify(history)
+    );
+
+    location.reload();
+}
+
+function clearAllRecords() {
+
+    const confirmDelete = confirm(
+        "Are you sure you want to delete all attendance records?"
+    );
+
+    if (confirmDelete) {
+        localStorage.removeItem("attendanceHistory");
+        location.reload();
+    }
+}
+
+        function goBack() {
+
+            window.location.href =
+                "admin-labs.html";
+
+        }
+
+    </script>
+
+</body>
+
+</html>

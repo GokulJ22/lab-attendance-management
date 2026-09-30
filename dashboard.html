@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <!-- Header -->
+        <div class="dashboard-header">
+
+            <h1>Welcome, Student </h1>
+
+            <p>
+                Lab Attendance Management System
+            </p>
+
+        </div>
+
+
+        <!-- Student Information -->
+        <div class="lab-card student-profile">
+
+    <h2>Student Profile</h2>
+
+    <div class="profile-info">
+
+        <div>
+            <span>Registration Number</span>
+            <strong id="studentReg"></strong>
+        </div>
+
+        <div>
+            <span>Class</span>
+            <strong id="studentClass"></strong>
+        </div>
+
+        <div>
+            <span>Status</span>
+            <strong class="active-status">Active</strong>
+        </div>
+
+        <div>
+            <span>Total Labs</span>
+            <strong>3</strong>
+        </div>
+
+    </div>
+
+</div>
+
+        <!-- Lab Container -->
+        <div class="lab-container">
+
+            <!-- Data Structure Lab -->
+            <div class="lab-card">
+
+                <h3>Data Structure Lab</h3>
+
+                <p>
+                    Data Structure practical attendance
+                </p>
+
+                <button onclick="openLab('Data Structure Lab')">
+                    Mark Attendance
+                </button>
+
+            </div>
+
+
+            <!-- OS Lab -->
+            <div class="lab-card">
+
+                <h3>OS Lab</h3>
+
+                <p>
+                    Operating System practical attendance
+                </p>
+
+                <button onclick="openLab('OS Lab')">
+                    Mark Attendance
+                </button>
+
+            </div>
+
+
+            <!-- Java Lab -->
+            <div class="lab-card">
+
+                <h3>Java Lab</h3>
+
+                <p>
+                    Java practical attendance
+                </p>
+
+                <button onclick="openLab('Java Lab')">
+                    Mark Attendance
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- View Attendance -->
+        <div class="lab-card">
+
+            <h3>My Attendance</h3>
+
+            <p>
+                View your complete lab attendance history.
+            </p>
+
+            <button onclick="viewAttendance()">
+                View Attendance
+            </button>
+
+        </div>
+
+        <div class="logout-section">
+
+    <button class="logout-btn" onclick="logout()">
+        Logout
+    </button>
+
+</div>
+
+    </div>
+
+<script>
+
+const student = JSON.parse(localStorage.getItem("student"));
+
+const regNumber = student ? student.registerNo : "";
+const studentClass = student ? student.studentClass : "";
+
+
+// Display student details
+document.getElementById("studentReg").textContent =
+    regNumber || "Not available";
+
+document.getElementById("studentClass").textContent =
+    studentClass || "Not available";
+
+
+// Open selected lab
+function openLab(labName) {
+
+    window.location.href =
+        "attendance.html?lab=" +
+        encodeURIComponent(labName) +
+        "&regNumber=" +
+        encodeURIComponent(regNumber) +
+        "&class=" +
+        encodeURIComponent(studentClass);
+}
+
+
+// View Attendance
+function viewAttendance() {
+
+    window.location.href =
+        "attendance.html?view=all" +
+        "&regNumber=" +
+        encodeURIComponent(regNumber) +
+        "&class=" +
+        encodeURIComponent(studentClass);
+}
+
+
+// Logout
+function logout() {
+
+    localStorage.removeItem("student");
+
+    window.location.href = "index.html";
+}
+
+</script>
+    
+
+</body>
+
+</html>

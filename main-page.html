@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lab Attendance Management System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: #f1f5f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .main-card {
+            width: 450px;
+            background: white;
+            padding: 45px;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .main-card h1 {
+            color: #172554;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .main-card p {
+            color: #64748b;
+            margin-bottom: 35px;
+        }
+
+        .login-options {
+            display: flex;
+            gap: 15px;
+        }
+
+        .login-btn {
+            flex: 1;
+            padding: 16px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .student-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .student-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .admin-btn {
+            background: #172554;
+            color: white;
+        }
+
+        .admin-btn:hover {
+            background: #0f172a;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 500px) {
+            .main-card {
+                width: 90%;
+                padding: 35px 25px;
+            }
+
+            .login-options {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-card">
+
+        <h1>Lab Attendance Management System</h1>
+
+        <p>Select your login type</p>
+
+        <div class="login-options">
+
+            <a href="index.html" class="login-btn student-btn">
+                Student Login
+            </a>
+
+            <a href="admin-login.html" class="login-btn admin-btn">
+                Admin Login
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

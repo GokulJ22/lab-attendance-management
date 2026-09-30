@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Attendance History</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <div class="dashboard-header">
+
+            <h1>Attendance History</h1>
+
+            <p>My Lab Attendance</p>
+
+        </div>
+
+
+        <div class="lab-card">
+
+            <h2>Attendance History</h2>
+
+            <p>
+                <b>Registration Number:</b>
+                <span id="regNumber"></span>
+            </p>
+
+
+            <div style="overflow-x: auto;">
+
+                <table id="attendanceTable">
+
+                    <thead>
+
+                        <tr>
+                            <th>Lab</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="historyBody">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <br>
+
+            <button onclick="goBack()">
+                Back to Dashboard
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        // Get registration number
+        const params =
+            new URLSearchParams(window.location.search);
+
+        const regNumber =
+            params.get("regNumber");
+
+
+        document.getElementById("regNumber").innerText =
+            regNumber || "Not available";
+
+
+        // Get saved attendance
+        const history =
+            JSON.parse(
+                localStorage.getItem("attendanceHistory")
+            ) || [];
+
+
+        // Only show this student's records
+        const studentHistory =
+            history.filter(
+                item => item.regNumber === regNumber
+            );
+
+
+        const historyBody =
+            document.getElementById("historyBody");
+
+
+        if (studentHistory.length === 0) {
+
+            historyBody.innerHTML = `
+                <tr>
+                    <td colspan="4">
+                        No attendance records found
+                    </td>
+                </tr>
+            `;
+
+        } else {
+
+            studentHistory.forEach(item => {
+
+                const row =
+                    document.createElement("tr");
+
+                row.innerHTML = `
+                    <td>${item.lab}</td>
+                    <td>${item.status}</td>
+                    <td>${item.date}</td>
+                    <td>${item.time}</td>
+                `;
+
+                historyBody.appendChild(row);
+
+            });
+
+        }
+
+
+        // Back to dashboard
+        function goBack() {
+
+            window.location.href =
+                "dashboard.html?regNumber=" +
+                encodeURIComponent(regNumber);
+
+        }
+
+    </script>
+
+</body>
+
+</html>
