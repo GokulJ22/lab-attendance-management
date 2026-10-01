@@ -96,7 +96,7 @@ document.getElementById("loginForm").addEventListener("submit", async function (
     try {
 
         const response = await fetch(
-            "http://localhost:8080/api/students/login?username="
+            "https://itchy-loops-occur.loca.lt/api/students/login?username="
             + encodeURIComponent(username)
             + "&password="
             + encodeURIComponent(password),
